@@ -1,12 +1,13 @@
 namespace RealVirtualMachine.Instructions;
 
 using RealVirtualMachine.Enums;
+using RealVirtualMachine.Hardware;
 
 public static class Decoder
 {
     public static bool TryDecode(uint word, out Instruction instruction)
     {
-        instruction = null;
+        instruction = default;
 
         if ((word >> 16) != 0)
             return false;
@@ -16,9 +17,9 @@ public static class Decoder
         int n2 = (int)((word >> 8) & 0xF);
         int n3 = (int)((word >> 4) & 0xF);
         int n4 = (int)(word & 0xF);
-        byte low = (byte)(word & 0xFF) // [n3][n4]
+        byte low = (byte)(word & 0xFF); // [n3][n4]
 
-        if (!Enum.IsDefined(typeof(Opcode), (byte)op))
+        if (!Enum.IsDefined(typeof(Opcode), op))
             return false;
 
         var opcode = (Opcode)op;

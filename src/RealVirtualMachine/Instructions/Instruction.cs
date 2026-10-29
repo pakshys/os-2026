@@ -2,7 +2,7 @@ namespace RealVirtualMachine.Instructions;
 
 using RealVirtualMachine.Enums;
 
-public record Instruction(
+public record struct Instruction(
     Opcode Opcode,
     int Register1 = 0,
     int Register2 = 0,
