@@ -11,3 +11,9 @@
 Run the command:
 
 `dotnet run --project src/RealVirtualMachine`
+
+## Running tests
+
+Run the command:
+
+`dotnet test`

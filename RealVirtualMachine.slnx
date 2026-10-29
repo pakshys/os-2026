@@ -2,4 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/RealVirtualMachine/RealVirtualMachine.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RealVirtualMachine.Tests/RealVirtualMachine.Tests.csproj" />
+  </Folder>
 </Solution>
