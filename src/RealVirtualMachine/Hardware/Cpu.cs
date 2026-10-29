@@ -59,12 +59,12 @@ public class Cpu
         Mode = (byte)CpuMode.Supervisor;
     }
 
-    private bool GetFlag(int bit) => (Flags & (1 << bit)) != 0;
+    private bool GetFlag(int flagBit) => (Flags & (1 << flagBit)) != 0;
     
-    private void SetFlag(int bit, bool value)
+    private void SetFlag(int flagBit, bool value)
     {
-        if (value) Flags |= (byte)(1 << bit);
-        else Flags &= (byte)~(1 << bit);
+        if (value) Flags |= (byte)(1 << flagBit);
+        else Flags &= (byte)~(1 << flagBit);
     }
 
     public void ResetFlags() => Flags = 0;

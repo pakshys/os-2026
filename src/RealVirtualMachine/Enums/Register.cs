@@ -1,6 +1,6 @@
 namespace RealVirtualMachine.Enums;
 
-enum Register
+public enum Register
 {
     AX = 0,
     BX = 1,
