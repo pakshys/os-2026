@@ -24,6 +24,12 @@ public class Cpu
     public byte PI { get; set; } 
     public byte TI { get; set; }
 
+//extra registers for source and destination. SB ST soursce, DB DT destination.
+    public int SB { get; set; }
+    public int DB { get; set; }
+    public ChannelTypeBasedOnDevice ST { get; set; }
+    public ChannelTypeBasedOnDevice DT { get; set; }
+
     public Cpu()
     {
         ResetRegisters();
@@ -56,6 +62,13 @@ public class Cpu
         SI = 0;
         PI = 0;
         TI = 0;
+        //SB DB for for user memory defaults
+        SB = 0;
+        DB = 0;
+        //device type
+        ST = ChannelTypeBasedOnDevice.UserMemory;
+        DT = ChannelTypeBasedOnDevice.UserMemory;
+        
         Mode = (byte)CpuMode.Supervisor;
     }
 
