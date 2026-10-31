@@ -103,7 +103,7 @@ public class MemoryTests
     {
         var memory = new Memory(UserBlocks);
 
-        Assert.Throws<ArgumentNullException>(() => memory.WriteBlock(0, null));
+        Assert.Throws<ArgumentNullException>(() => memory.WriteBlock(0, null!));
     }
 
     [Fact]
