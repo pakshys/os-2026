@@ -68,6 +68,26 @@ public sealed class Hdd
         Save(words);
     }
 
+    // Read a complete 16-word block from its zero-based block number.
+    public uint[] ReadBlock(int block)
+    {
+        int start = GetAddress(block, 0);
+        return Load().Skip(start).Take(WordsPerMemoryBlock).ToArray();
+    }
+
+    // Replace a complete 16-word block and persist the disk image once.
+    public void WriteBlock(int block, uint[] words)
+    {
+        int start = GetAddress(block, 0);
+        ArgumentNullException.ThrowIfNull(words);
+        if (words.Length != WordsPerMemoryBlock)
+            throw new ArgumentException($"A block has {WordsPerMemoryBlock} words", nameof(words));
+
+        var diskWords = Load();
+        Array.Copy(words, 0, diskWords, start, WordsPerMemoryBlock);
+        Save(diskWords);
+    }
+
     // Pack ASCII characters fromhighest byte down, trailing zero bytes.
     private static uint EncodeName(string name)
     {
