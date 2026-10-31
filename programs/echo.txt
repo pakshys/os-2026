@@ -1,0 +1,9 @@
+; ECHO: reads one line from keyboard and prints it
+24414D4A ; $AMJ
+4543484F ; ECHO
+24444154 ; $DAT
+24434F44 ; $COD
+0000D010 ; [80] GD 10
+0000E010 ; [81] PD 10
+0000F000 ; [82] HALT
+24454E44 ; $END

@@ -1,0 +1,7 @@
+; LOOP: never halts, used to test the timer
+24414D4A ; $AMJ
+4C4F4F50 ; LOOP
+24444154 ; $DAT
+24434F44 ; $COD
+00009080 ; [80] JMP 80
+24454E44 ; $END
