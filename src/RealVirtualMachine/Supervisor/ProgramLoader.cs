@@ -3,13 +3,10 @@ namespace RealVirtualMachine.Supervisor;
 using RealVirtualMachine.Enums;
 using RealVirtualMachine.Hardware;
 
-// Loads a program from the HDD into a new virtual machine.
-// All block transfers go through the channel device:
-//   HDD block -> supervisor input buffer, then prepared VM block -> staging buffer -> user memory.
+//loads program from HDD into new VM. all transfers go through channel device
 public sealed class ProgramLoader
 {
-    // Page tables take the lowest free supervisor blocks (at most 4 VMs => blocks 0-3),
-    // so the two highest blocks are free for loader buffers.
+    //page tables use lowest supervisor blocks (max 4 VMs -> 0-3), so last two are free for buffers
     public const int InputBufferBlock = 15;
     public const int StagingBufferBlock = 14;
 
@@ -19,7 +16,7 @@ public sealed class ProgramLoader
     private readonly ChannelDevice _channel;
     private readonly VirtualMachineManager _manager;
 
-    // realCpu is the CPU whose SB/DB/ST/DT registers the channel device reads
+    //realCpu = cpu whose SB DB ST DT registers channel device uses
     public ProgramLoader(Cpu realCpu, Memory supervisorMemory, Hdd hdd, ChannelDevice channel, VirtualMachineManager manager)
     {
         ArgumentNullException.ThrowIfNull(realCpu);
@@ -35,8 +32,7 @@ public sealed class ProgramLoader
         _manager = manager;
     }
 
-    // Throws KeyNotFoundException if the program is not on the HDD and FormatException if it is invalid.
-    // A VM is created only after the program has been validated, so a failed load leaks no memory.
+    //VM is created only after program is validated -> failed load doesnt leave allocated memory
     public VirtualMachine Load(string name)
     {
         var entry = _hdd.FindProgram(name)
@@ -62,6 +58,7 @@ public sealed class ProgramLoader
         return vm;
     }
 
+    //HDD -> supervisor input buffer, block by block
     private uint[] ReadFromHdd(HddProgram entry)
     {
         var words = new List<uint>(entry.WordCount);
@@ -78,7 +75,7 @@ public sealed class ProgramLoader
         return words.ToArray();
     }
 
-    // Copies a section into consecutive VM blocks; unused words of the last block stay 0.
+    //copies section into consecutive VM blocks, rest of last block stays 0
     private void WriteSection(VirtualMachine vm, int firstVirtualBlock, uint[] words)
     {
         for (int offset = 0; offset < words.Length; offset += Memory.WordsPerMemoryBlock)

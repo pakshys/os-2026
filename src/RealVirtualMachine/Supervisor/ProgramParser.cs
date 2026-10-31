@@ -4,23 +4,23 @@ using RealVirtualMachine.Hardware;
 
 public sealed record ParsedProgram(uint Name, uint[] Data, uint[] Code);
 
-// Splits a program image into its data and code sections.
-// Format (one word per line): $AMJ, name, $DAT, data words..., $COD, code words..., $END
+//splits program into data and code: $AMJ, name, $DAT, data, $COD, code, $END
 public static class ProgramParser
 {
-    // Tags are 4 ASCII chars, first char in the highest byte
+    //tags are 4 ASCII chars, first char in highest byte
     public const uint AmjTag = 0x24414D4A; // $AMJ
     public const uint DatTag = 0x24444154; // $DAT
     public const uint CodTag = 0x24434F44; // $COD
     public const uint EndTag = 0x24454E44; // $END
 
-    // VM blocks 0-7 hold data, blocks 8-F hold code
+    //VM blocks 0-7 for data, 8-F for code
     public const int MaximumSectionWords = 8 * Memory.WordsPerMemoryBlock; // 128
     public const int CodeStartAddress = 0x80;
 
-    // $AMJ + name + $DAT + data + $COD + code + $END
+    //5 tags/name words + both sections
     public const int MaximumProgramWords = 5 + 2 * MaximumSectionWords; // 261
 
+    //throws FormatException if program is invalid
     public static ParsedProgram Parse(IReadOnlyList<uint> words)
     {
         ArgumentNullException.ThrowIfNull(words);
